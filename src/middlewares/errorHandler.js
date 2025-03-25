@@ -1,4 +1,30 @@
-import createError from 'http-errors';
+import { HttpError } from 'http-errors';
+
+export const errorHandler = (err, req, res, next) => {
+  
+  if (err instanceof HttpError) {
+    res.status(err.status).json({
+      status: err.status,
+      message: err.message,
+      data: err,
+    });
+    return;
+  }
+
+  res.status(500).json({
+    status: 500,
+    message: 'Something went wrong',
+    data: err.message,
+  });
+};
+
+export default errorHandler;
+
+
+
+
+
+/*import createError from 'http-errors';
 
 export const errorHandler = (err, req, res, next) => {
   const status = err.status || 500;
@@ -35,27 +61,3 @@ export const errorHandler = (err, req, res, next) => {
 };
 
 export default errorHandler;*/
-
-
-/*import { HttpError } from 'http-errors';
-
-export const errorHandler = (err, req, res, next) => {
-  // Перевірка, чи отримали ми помилку від createHttpError
-  if (err instanceof HttpError) {
-    res.status(err.status).json({
-      status: err.status,
-      message: err.name,
-      data: err,
-    });
-    next()
-    return;
-  }
-
-  res.status(500).json({
-    status: 500,
-    message: 'Something went wrong',
-    data: err.message,
-  });
-};
-
-export default errorHandler*/
