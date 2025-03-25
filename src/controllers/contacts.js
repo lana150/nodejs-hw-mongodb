@@ -1,4 +1,5 @@
 import createError from 'http-errors';
+import mongoose from 'mongoose';
 import {
   getAllContacts,
   getContactById,
@@ -6,22 +7,53 @@ import {
   updateContactById,
   deleteContactById,
 } from '../services/contacts.js';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
 
-export const getContacts = async (req, res) => {
+/*export const getContacts = async (req, res) => {
   const contacts = await getAllContacts();
   res.status(200).json({
     status: 200,
     message: 'Successfully found contacts!',
     data: contacts,
   });
+};*/
+
+export const getContacts = async (req, res) => {
+  const pagination = parsePaginationParams(req.query);
+  const sortParams = parseSortParams(req.query); // Парсимо параметри сортування
+
+  const { contacts, totalItems, totalPages } = await getAllContacts({
+    ...pagination,
+    ...sortParams, // Передаємо параметри сортування
+  });
+
+  res.status(200).json({
+    status: 200,
+    message: 'Successfully found contacts!',
+    data: {
+      data: contacts,
+      ...pagination,
+      totalItems,
+      totalPages,
+      hasPreviousPage: pagination.page > 1,
+      hasNextPage: pagination.page < totalPages,
+    },
+  });
 };
 
 export const getContactByIdController = async (req, res) => {
   const { contactId } = req.params;
+
+if (!mongoose.isValidObjectId(contactId)) {
+    throw (createError(400, 'ID is not valid'));
+  }
+
   const contact = await getContactById(contactId);
 
   if (!contact) {
-    throw createError(404, 'Contact not found');
+    //throw createError(404, 'Contact not found');
+    throw (createError(400, 'ID is not valid'));
   }
 
   res.status(200).json({
@@ -52,6 +84,7 @@ export const createContact = async (req, res) => {
     data: newContact,
   });
 };
+
 
 export const updateContact = async (req, res) => {
   const { contactId } = req.params;
@@ -85,6 +118,8 @@ export const deleteContact = async (req, res) => {
 
   res.status(204).send();
 };
+
+
 
 
 
