@@ -24,6 +24,7 @@ export default errorHandler;
 
 
 
+
 /*import createError from 'http-errors';
 
 export const errorHandler = (err, req, res, next) => {
@@ -37,7 +38,8 @@ export const errorHandler = (err, req, res, next) => {
   });
 };
 
-export default errorHandler;
+export default errorHandler;*/
+
 
 
 /*import createError  from 'http-errors';

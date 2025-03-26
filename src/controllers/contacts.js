@@ -9,7 +9,7 @@ import {
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 
-export const getContacts = async (req, res) => {
+export const getContactsController = async (req, res) => {
   const pagination = parsePaginationParams(req.query);
   const sortParams = parseSortParams(req.query); 
 
@@ -46,7 +46,7 @@ export const getContactByIdController = async (req, res) => {
   });
 };
 
-export const createContact = async (req, res) => {
+export const createContactController = async (req, res) => {
   const { name, phoneNumber, email, isFavourite = false, contactType } = req.body;
 
   if (!name || !phoneNumber || !contactType) {
@@ -68,13 +68,9 @@ export const createContact = async (req, res) => {
   });
 };
 
-export const updateContact = async (req, res) => {
+export const updateContactController = async (req, res) => {
   const { contactId } = req.params;
   const updates = req.body;
-
-  if (!updates || Object.keys(updates).length === 0) {
-    throw createHttpError(400, 'No fields to update');
-  }
 
   const updatedContact = await updateContactById(contactId, updates);
 
@@ -89,7 +85,7 @@ export const updateContact = async (req, res) => {
   });
 };
 
-export const deleteContact = async (req, res) => {
+export const deleteContactController = async (req, res) => {
   const { contactId } = req.params;
 
   const deletedContact = await deleteContactById(contactId);
@@ -100,7 +96,6 @@ export const deleteContact = async (req, res) => {
 
   res.status(204).send();
 };
-
 
 
 
