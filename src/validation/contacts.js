@@ -17,7 +17,7 @@ export const updateContactValidationSchema = Joi.object({
   email: Joi.string().min(3).max(20).email({ tlds: { allow: false } }),
   isFavourite: Joi.boolean(),
   contactType: Joi.string().valid('work', 'home', 'personal'),
-}).min(1); // Мінімум одне поле має бути передано
+}).min(1); 
 
 
 /*import Joi from 'joi';
