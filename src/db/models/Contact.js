@@ -27,7 +27,8 @@ const contactSchema = new Schema(
     },
     userId: { // нова властивість 
       type: Schema.Types.ObjectId, 
-      ref: 'users' 
+      ref: 'users',
+      required: true
     },  
   },
   {
