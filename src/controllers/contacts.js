@@ -11,15 +11,15 @@ import { parseSortParams } from '../utils/parseSortParams.js';
 
 export const getContactsController = async (req, res) => {
   const pagination = parsePaginationParams(req.query);
-  const sortParams = parseSortParams(req.query); 
-
+  const sortParams = parseSortParams(req.query);
+  
   const { contacts, totalItems, totalPages } = await getAllContacts({
-    userId: req.user.id,
+    userId: req.user.id, 
     ...pagination,
-    ...sortParams, 
+    ...sortParams,
   });
 
-   res.status(200).json({
+  res.status(200).json({
     status: 200,
     message: 'Successfully found contacts!',
     data: {
@@ -31,7 +31,8 @@ export const getContactsController = async (req, res) => {
       hasNextPage: pagination.page < totalPages,
     },
   });
-};                  
+};
+
 export const getContactByIdController = async (req, res) => {
   const { contactId } = req.params;
 
@@ -55,13 +56,14 @@ export const createContactController = async (req, res) => {
     throw createHttpError(400, 'Missing required fields: name, phoneNumber, contactType');
   }
 
+  
   const newContact = await addContact({
     name,
     phoneNumber,
     email,
     isFavourite,
     contactType,
-    userId: req.user.id,
+    userId: req.user.id, 
   });
 
   res.status(201).json({
