@@ -30,6 +30,8 @@ const contactSchema = new Schema(
       ref: 'users',
       required: true
     },  
+
+    photo: { type: String },
   },
   {
     timestamps: true,
@@ -37,4 +39,5 @@ const contactSchema = new Schema(
   },
 );
 
+ 
 export const contactsCollection = model('contacts', contactSchema);

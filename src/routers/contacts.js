@@ -16,6 +16,8 @@ import {
 
 import { authenticate } from '../middlewares/authenticate.js';
 
+import { upload } from '../middlewares/multer.js';
+
 
 const router = express.Router();
 
@@ -27,4 +29,33 @@ router.post('/', validateBody(createContactValidationSchema), ctrlWrapper(create
 router.patch('/:contactId', isValidId, validateBody(updateContactValidationSchema), ctrlWrapper(updateContactController));
 router.delete('/:contactId', isValidId, ctrlWrapper(deleteContactController));
 
+router.post(
+  '/',
+  checkRoles(ROLES.TEACHER),
+  upload.single('photo'), // додаємо цю middleware
+  validateBody(createContactSchema),
+  ctrlWrapper(createContactController),
+);
+
+router.put(
+  '/:contactId',
+  checkRoles(ROLES.TEACHER),
+  isValidId,
+  upload.single('photo'), // додаємо цю middleware
+  validateBody(createContactSchema),
+  ctrlWrapper(upserContactController),
+);
+
+router.patch(
+  '/:contactId',
+  checkRoles(ROLES.TEACHER, ROLES.PARENT),
+  isValidId,
+  upload.single('photo'), // додаємо цю middleware
+  validateBody(updateContactSchema),
+  ctrlWrapper(patchContactController),
+);
+
+
 export default router;
+
+
