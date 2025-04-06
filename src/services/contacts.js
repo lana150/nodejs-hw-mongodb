@@ -41,6 +41,7 @@ export const addContact = async ({
   isFavourite,
   contactType,
   userId, 
+  photo
 }) => {
   const newContact = new contactsCollection({
     name,
@@ -49,6 +50,7 @@ export const addContact = async ({
     isFavourite,
     contactType,
     userId, 
+    photo
   });
 
   return await newContact.save();

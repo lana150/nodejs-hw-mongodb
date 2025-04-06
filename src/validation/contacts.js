@@ -12,9 +12,9 @@ export const createContactValidationSchema = Joi.object({
   isFavourite: Joi.boolean(),
   contactType: Joi.string().valid('work', 'home', 'personal').required(),
   userId: Joi.string().custom((value, helper) => {
-    if (value && !isValidObjectId(value)) {
-      return helper.message('userId should be a valid mongo id');
-    }
+     if (value && !isValidObjectId(value)) {
+       return helper.message('userId should be a valid mongo id');
+     }
     return true;
   }),
 });
