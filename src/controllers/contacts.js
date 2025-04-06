@@ -108,9 +108,44 @@ export const deleteContactController = async (req, res) => {
   res.status(204).send();
 };
 
-
-
 export const patchContactController = async (req, res, next) => {
+  const { contactId } = req.params;
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+  const result = await updateContactById(
+    { _id: contactId, userId: req.user.id },
+    {
+      ...req.body,
+      photo: photoUrl,
+    }
+  );
+
+  if (!result) {
+    next(createHttpError(404, 'Contact not found'));
+    return;
+  }
+
+  res.json({
+    status: 200,
+    message: `Successfully patched contact!`,
+    data: result, 
+  });
+};
+
+
+
+
+/*export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const photo = req.file;
 
@@ -140,7 +175,7 @@ export const patchContactController = async (req, res, next) => {
     message: `Successfully patched contact!`,
     data: result.student,
   });
-};
+};*/
   
 	/* в photo лежить обʼєкт файлу
 		{
