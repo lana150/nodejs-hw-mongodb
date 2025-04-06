@@ -57,12 +57,13 @@ export const getContactByIdController = async (req, res) => {
 
 export const createContactController = async (req, res) => {
   const { name, phoneNumber, email, isFavourite = false, contactType } = req.body;
-
+  console.log(req.file);
+  
   if (!name || !phoneNumber || !contactType) {
     throw createHttpError(400, 'Missing required fields: name, phoneNumber, contactType');
   }
+  const url= await saveFileToCloudinary (req.file) 
 
-  
   const newContact = await addContact({
     name,
     phoneNumber,
@@ -70,6 +71,7 @@ export const createContactController = async (req, res) => {
     isFavourite,
     contactType,
     userId: req.user.id, 
+    photo:url
   });
 
   res.status(201).json({
