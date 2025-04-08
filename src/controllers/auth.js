@@ -2,10 +2,11 @@ import {
   registerUser,
   loginUser,
   refreshUsersSession,
-  logoutUser
+  logoutUser,
+  requestResetToken,
+  resetPassword,
 } from '../services/auth.js';
 import { ONE_DAY } from '../constants/index.js';
-
 
 export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
@@ -77,11 +78,6 @@ export const logoutUserController = async (req, res) => {
   res.status(204).send();
 };
 
-
-
-
-import { requestResetToken } from '../services/auth.js';
-
 export const requestResetEmailController = async (req, res) => {
   await requestResetToken(req.body.email);
   res.json({
@@ -90,10 +86,6 @@ export const requestResetEmailController = async (req, res) => {
     data: {},
   });
 };
-
-import { resetPassword } from '../services/auth.js';
-
-/* Інший код файлу */
 
 export const resetPasswordController = async (req, res) => {
   await resetPassword(req.body);
