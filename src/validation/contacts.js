@@ -12,9 +12,9 @@ export const createContactValidationSchema = Joi.object({
   isFavourite: Joi.boolean(),
   contactType: Joi.string().valid('work', 'home', 'personal').required(),
   userId: Joi.string().custom((value, helper) => {
-     if (value && !isValidObjectId(value)) {
-       return helper.message('userId should be a valid mongo id');
-     }
+    if (value && !isValidObjectId(value)) {
+      return helper.message('userId should be a valid mongo id');
+    }
     return true;
   }),
 });
@@ -28,10 +28,10 @@ export const updateContactValidationSchema = Joi.object({
     .email({ tlds: { allow: false } }),
   isFavourite: Joi.boolean(),
   contactType: Joi.string().valid('work', 'home', 'personal'),
-   userId: Joi.string().custom((value, helper) => {
+  userId: Joi.string().custom((value, helper) => {
     if (value && !isValidObjectId(value)) {
       return helper.message('userId should be a valid mongo id');
     }
     return true;
   }),
-}).min(1); 
+}).min(1);
